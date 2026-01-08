@@ -21,9 +21,15 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     if (!snapshot.empty) {
       const doc = snapshot.docs[0];
       const data = doc.data();
+      if (!data) {
+        return NextResponse.json(
+          { success: false, error: "Map data is missing" },
+          { status: 500 }
+        );
+      }
       return NextResponse.json({
         success: true,
-        data: { ...data, id: data.id || doc.id },
+        data: { ...data, id: (data as Partial<MapData>).id || doc.id },
       });
     }
 
@@ -42,10 +48,16 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     }
 
     const data = doc.data();
+    if (!data) {
+      return NextResponse.json(
+        { success: false, error: "Map data is missing" },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       success: true,
-      data: { ...data, id: data.id || doc.id },
+      data: { ...data, id: (data as Partial<MapData>).id || doc.id },
     });
   } catch (error) {
     console.error(`GET /api/maps/[id] error:`, error);

@@ -14,9 +14,9 @@ import { getFirestore } from "firebase-admin/firestore";
 if (!getApps().length) {
   try {
     // Option 1: Using service account key file path
-    if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY_PATH) {
+    if (process.env.FIREBASE_SERVICE_ACCOUNT) {
       initializeApp({
-        credential: cert(process.env.FIREBASE_SERVICE_ACCOUNT_KEY_PATH),
+        credential: cert(JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)),
       });
     }
     // Option 2: Using individual service account credentials from env vars

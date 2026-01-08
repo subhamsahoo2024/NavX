@@ -1,7 +1,7 @@
 // app/navigate/page.tsx
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, Suspense } from "react";
 import { Navigation2, RotateCcw, Home, MapPin, Target } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -32,6 +32,20 @@ interface NavigationState {
 // ============================================================================
 
 export default function NavigatePage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 via-blue-50 to-slate-100">
+          <div className="text-gray-700 text-sm">Loading navigation…</div>
+        </main>
+      }
+    >
+      <NavigatePageContent />
+    </Suspense>
+  );
+}
+
+function NavigatePageContent() {
   // Read URL query parameters for QR Code detection
   const searchParams = useSearchParams();
   const qrMapId = searchParams.get("mapId");

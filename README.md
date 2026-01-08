@@ -1,10 +1,10 @@
-# FANTASTIC 4 
+# FANTASTIC 4
 
 <img src="./public/navigation-logo.png" alt="Logo" width="200"/>
+
 # Indoor Navigation System
 
-An Indoor Navigation System for a complex indoor spaces  using Multi-Map Navigation with Gateway Nodes, powered by Firebase Firestore and Google Gemini AI.
-
+An Indoor Navigation System for a complex indoor spaces using Multi-Map Navigation with Gateway Nodes, powered by Firebase Firestore and Google Gemini AI.
 
 ## Tech Stack
 
@@ -18,14 +18,39 @@ An Indoor Navigation System for a complex indoor spaces  using Multi-Map Navigat
 
 ## Features
 
--  **Multi-Map Navigation** across Campus, Building, and Floor levels
--  **Gateway Nodes** for seamless transitions between maps
--  **AI-Powered Chatbot** using Google Gemini for natural language navigation
--  **Real-time Pathfinding** with Dijkstra algorithm
--  **Interactive Canvas** with touch/mouse support
--  **Mobile Responsive** with native-like animations
--  **Firebase Backend** for real-time data storage
--  **Fast Performance** with Next.js 16 and Turbopack
+- **Multi-Map Navigation** across Campus, Building, and Floor levels
+- **Gateway Nodes** for seamless transitions between maps
+- **AI-Powered Chatbot** using Google Gemini for natural language navigation
+- **Real-time Pathfinding** with Dijkstra algorithm
+- **Interactive Canvas** with touch/mouse support
+- **Mobile Responsive** with native-like animations
+- **Firebase Backend** for real-time data storage
+- **Fast Performance** with Next.js 16 and Turbopack
 
+**Set up environment variables**
 
+Create a `.env` file in the root directory:
 
+```bash
+# Firebase Client SDK (Browser-side) - Public variables
+FIREBASE_API_KEY=your_firebase_api_key
+FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+FIREBASE_DATABASE_URL=https://your-project.firebasedatabase.app
+FIREBASE_STORAGE_BUCKET=your-project.firebasestorage.app
+FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+FIREBASE_APP_ID=your_app_id
+
+# Firebase Admin SDK (Server-side)
+FIREBASE_PROJECT_ID=your-project-id
+FIREBASE_CLIENT_EMAIL=your-service-account@your-project.iam.gserviceaccount.com
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYour-Private-Key\n-----END PRIVATE KEY-----\n"
+
+# OR use service account file (recommended)
+FIREBASE_SERVICE_ACCOUNT="content of service-account.json"
+
+# Google Gemini AI
+GEMINI_API_KEY=your_gemini_api_key
+
+# App Settings
+NEXT_PUBLIC_USE_DATABASE=true
+```
