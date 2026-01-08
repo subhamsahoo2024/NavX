@@ -1,4 +1,6 @@
-#FANTASTIC 4 
+# FANTASTIC 4 
+
+<img src="./public/navigation-logo.png" alt="Logo" width="200"/>
 # Indoor Navigation System
 
 An Indoor Navigation System for a complex indoor spaces  using Multi-Map Navigation with Gateway Nodes, powered by Firebase Firestore and Google Gemini AI.
