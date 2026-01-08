@@ -2,6 +2,11 @@
 
 <img src="./public/navigation-logo.png" alt="Logo" width="200"/>
 
+# Deployment Links
+User Side: https://nav-x-five.vercel.app/navigate
+
+Admin Side: https://nav-x-five.vercel.app/admin
+
 # Indoor Navigation System
 
 An Indoor Navigation System for a complex indoor spaces using Multi-Map Navigation with Gateway Nodes, powered by Firebase Firestore and Google Gemini AI.
