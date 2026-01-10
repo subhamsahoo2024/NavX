@@ -1,11 +1,22 @@
 # FANTASTIC 4
 
-<img src="./public/navigation-logo.png" alt="Logo" width="200"/>
+<img width="1536" height="1024" alt="navx lg" src="https://github.com/user-attachments/assets/a8e8475c-ea94-45c5-8383-8483d6a67888" />
+
 
 # Deployment Links
 User Side: https://nav-x-five.vercel.app/navigate
 
 Admin Side: https://nav-x-five.vercel.app/admin
+
+
+Demo Video Link (User Pannel) 
+https://drive.google.com/file/d/12oYLuqPKdzuLeeI3xmOHRXMqgppZ_io3/view?usp=drivesdk
+
+Demo Video Link(Admin Pannel)
+https://drive.google.com/file/d/1LhHeYyNb0umdKHcWokzJStHdOk-NDESG/view?usp=drivesdk
+
+
+
 
 # Indoor Navigation System
 
