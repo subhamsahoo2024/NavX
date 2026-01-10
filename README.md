@@ -4,9 +4,9 @@
 
 
 # Deployment Links
-User Side: https://nav-x-five.vercel.app/navigate
+User Side: https://nav-x-five.vercel.app/navigate (open in mobile for better experience)
 
-Admin Side: https://nav-x-five.vercel.app/admin
+Admin Side: https://nav-x-five.vercel.app/admin (open in desktop for better experience)
 
 
 Demo Video Link (User Pannel) 
