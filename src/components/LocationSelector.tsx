@@ -14,6 +14,8 @@ import {
   X,
   ChevronDown,
   QrCode,
+  Share2,
+  Check,
 } from "lucide-react";
 import type { MapData, Node, NodeType } from "@/types/navigation";
 
@@ -327,6 +329,7 @@ export default function LocationSelector({
   const [startLocation, setStartLocation] = useState<SearchOption | null>(null);
   const [endLocation, setEndLocation] = useState<SearchOption | null>(null);
   const [isStartLockedByQR, setIsStartLockedByQR] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
 
   // Auto-set start location from URL parameters (QR Code)
   useEffect(() => {
@@ -433,6 +436,56 @@ export default function LocationSelector({
     setStartLocation(null);
     setIsStartLockedByQR(false);
   }, []);
+
+  // Handle share location
+  const handleShareLocation = async () => {
+    if (!startLocation) return;
+
+    // Check if we're in a browser environment
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const shareUrl = `${window.location.origin}/navigate?dest=${startLocation.nodeId}`;
+
+    // Try modern Clipboard API first
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
+        return;
+      } catch (err) {
+        console.warn("Clipboard API failed, trying fallback:", err);
+      }
+    }
+
+    // Fallback: Use legacy document.execCommand method
+    try {
+      const textArea = document.createElement("textarea");
+      textArea.value = shareUrl;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      textArea.style.top = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      const successful = document.execCommand("copy");
+      document.body.removeChild(textArea);
+
+      if (successful) {
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
+      } else {
+        throw new Error("execCommand failed");
+      }
+    } catch (err) {
+      console.error("All copy methods failed:", err);
+      // Last resort: show alert with URL
+      alert(`Copy this link:\n${shareUrl}`);
+    }
+  };
 
   // Handle navigation start
   const handleStartNavigation = () => {
@@ -640,6 +693,25 @@ export default function LocationSelector({
                 </p>
               </div>
             )}
+
+          {/* Share Location Button */}
+          <button
+            onClick={handleShareLocation}
+            disabled={!startLocation}
+            className="w-full py-3 min-h-[48px] bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 disabled:from-gray-300 disabled:to-gray-400 text-white font-semibold text-sm sm:text-base rounded-xl shadow-lg shadow-green-500/25 disabled:shadow-none transition-all flex items-center justify-center gap-2"
+          >
+            {isCopied ? (
+              <>
+                <Check className="w-5 h-5" />
+                Link Copied!
+              </>
+            ) : (
+              <>
+                <Share2 className="w-5 h-5" />
+                Share My Location
+              </>
+            )}
+          </button>
 
           {/* Start Button - Touch Friendly */}
           <button

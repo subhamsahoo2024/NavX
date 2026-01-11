@@ -4,7 +4,7 @@
 import { useState, useCallback, useEffect, Suspense } from "react";
 import { Navigation2, RotateCcw, Home, MapPin, Target } from "lucide-react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import IndoorNavigation from "@/components/IndoorNavigation";
 import LocationSelector from "@/components/LocationSelector";
 import AIChatbot from "@/components/AIChatbot";
@@ -28,6 +28,13 @@ interface NavigationState {
 }
 
 // ============================================================================
+// Constants
+// ============================================================================
+
+const STORAGE_KEY_START_NODE = "user_start_node";
+const STORAGE_KEY_START_MAP = "user_start_map";
+
+// ============================================================================
 // Main Component
 // ============================================================================
 
@@ -46,10 +53,14 @@ export default function NavigatePage() {
 }
 
 function NavigatePageContent() {
-  // Read URL query parameters for QR Code detection
+  // Router for navigation
+  const router = useRouter();
+
+  // Read URL query parameters for QR Code detection and shared destination
   const searchParams = useSearchParams();
   const qrMapId = searchParams.get("mapId");
   const qrNodeId = searchParams.get("nodeId");
+  const destNodeId = searchParams.get("dest");
 
   // Navigation state (refactored)
   const [navState, setNavState] = useState<NavigationState>({
@@ -78,15 +89,65 @@ function NavigatePageContent() {
     loadMaps();
   }, []);
 
-  // Set start node from QR code parameters
+  // Initialize start node from localStorage or QR code parameters
   useEffect(() => {
-    if (qrMapId && qrNodeId && !navState.startNode) {
-      setNavState((prev) => ({
-        ...prev,
-        startNode: { mapId: qrMapId, nodeId: qrNodeId },
-      }));
+    if (navState.startNode) return; // Already set, don't override
+
+    // Priority 1: Check for QR code scan in URL (fresh scan)
+    if (qrMapId && qrNodeId) {
+      const startNode = { mapId: qrMapId, nodeId: qrNodeId };
+      setNavState((prev) => ({ ...prev, startNode }));
+
+      // Save to localStorage for persistence
+      try {
+        localStorage.setItem(STORAGE_KEY_START_MAP, qrMapId);
+        localStorage.setItem(STORAGE_KEY_START_NODE, qrNodeId);
+      } catch (err) {
+        console.error("Failed to save to localStorage:", err);
+      }
+      return;
+    }
+
+    // Priority 2: Check localStorage for previously scanned location
+    try {
+      const savedMapId = localStorage.getItem(STORAGE_KEY_START_MAP);
+      const savedNodeId = localStorage.getItem(STORAGE_KEY_START_NODE);
+
+      if (savedMapId && savedNodeId) {
+        setNavState((prev) => ({
+          ...prev,
+          startNode: { mapId: savedMapId, nodeId: savedNodeId },
+        }));
+      }
+    } catch (err) {
+      console.error("Failed to read from localStorage:", err);
     }
   }, [qrMapId, qrNodeId, navState.startNode]);
+
+  // Set destination from shared link (dest parameter)
+  useEffect(() => {
+    if (!destNodeId || allMaps.length === 0 || navState.endNode) return;
+
+    // Find the node across all maps
+    let foundNode: { mapId: string; nodeId: string } | null = null;
+
+    for (const map of allMaps) {
+      const node = map.nodes?.find((n) => n.id === destNodeId);
+      if (node) {
+        foundNode = { mapId: map.id, nodeId: node.id };
+        break;
+      }
+    }
+
+    if (foundNode) {
+      setNavState((prev) => ({
+        ...prev,
+        endNode: foundNode,
+      }));
+    } else {
+      console.warn(`Destination node '${destNodeId}' not found in any map`);
+    }
+  }, [destNodeId, allMaps, navState.endNode]);
 
   // Calculate distance between two nodes (using pathfinder)
   const calculateDistance = useCallback(
@@ -125,6 +186,14 @@ function NavigatePageContent() {
         // Start navigating immediately to avoid double-click race with onNavigationTrigger
         isNavigating: true,
       }));
+
+      // Save start location to localStorage
+      try {
+        localStorage.setItem(STORAGE_KEY_START_MAP, startMapId);
+        localStorage.setItem(STORAGE_KEY_START_NODE, startNodeId);
+      } catch (err) {
+        console.error("Failed to save to localStorage:", err);
+      }
     },
     []
   );
@@ -150,6 +219,14 @@ function NavigatePageContent() {
         ...prev,
         startNode: { mapId, nodeId },
       }));
+
+      // Save to localStorage
+      try {
+        localStorage.setItem(STORAGE_KEY_START_MAP, mapId);
+        localStorage.setItem(STORAGE_KEY_START_NODE, nodeId);
+      } catch (err) {
+        console.error("Failed to save to localStorage:", err);
+      }
     },
     []
   );
@@ -161,15 +238,26 @@ function NavigatePageContent() {
     }
   }, [navState.startNode, navState.endNode]);
 
-  // Reset navigation
+  // Reset navigation and clear localStorage
   const handleReset = useCallback(() => {
+    // Clear localStorage
+    try {
+      localStorage.removeItem(STORAGE_KEY_START_MAP);
+      localStorage.removeItem(STORAGE_KEY_START_NODE);
+    } catch (err) {
+      console.error("Failed to clear localStorage:", err);
+    }
+
+    // Reset state - clear all navigation data
     setNavState({
-      startNode:
-        qrMapId && qrNodeId ? { mapId: qrMapId, nodeId: qrNodeId } : null,
+      startNode: null,
       endNode: null,
       isNavigating: false,
     });
-  }, [qrMapId, qrNodeId]);
+
+    // Redirect to clean navigate page without query parameters
+    router.push("/navigate");
+  }, [router]);
 
   // Handle navigation complete
   const handleNavigationComplete = useCallback(() => {
