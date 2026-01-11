@@ -126,7 +126,7 @@ function NavigatePageContent() {
 
   // Set destination from shared link (dest parameter)
   useEffect(() => {
-    if (!destNodeId || allMaps.length === 0 || navState.endNode) return;
+    if (!destNodeId || allMaps.length === 0) return;
 
     // Find the node across all maps
     let foundNode: { mapId: string; nodeId: string } | null = null;
@@ -140,14 +140,23 @@ function NavigatePageContent() {
     }
 
     if (foundNode) {
-      setNavState((prev) => ({
-        ...prev,
-        endNode: foundNode,
-      }));
+      setNavState((prev) => {
+        // Only update if the endNode is not already set to this node
+        if (
+          prev.endNode?.nodeId === foundNode.nodeId &&
+          prev.endNode?.mapId === foundNode.mapId
+        ) {
+          return prev;
+        }
+        return {
+          ...prev,
+          endNode: foundNode,
+        };
+      });
     } else {
       console.warn(`Destination node '${destNodeId}' not found in any map`);
     }
-  }, [destNodeId, allMaps, navState.endNode]);
+  }, [destNodeId, allMaps]);
 
   // Calculate distance between two nodes (using pathfinder)
   const calculateDistance = useCallback(
