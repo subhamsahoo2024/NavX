@@ -2,21 +2,11 @@
 
 <img width="1536" height="1024" alt="navx lg" src="https://github.com/user-attachments/assets/a8e8475c-ea94-45c5-8383-8483d6a67888" />
 
-
 # Deployment Links
+
 User Side: https://nav-x-five.vercel.app/navigate (open in mobile for better experience)
 
 Admin Side: https://nav-x-five.vercel.app/admin (open in desktop for better experience)
-
-
-Demo Video Link (User Pannel) 
-https://drive.google.com/file/d/12oYLuqPKdzuLeeI3xmOHRXMqgppZ_io3/view?usp=drivesdk
-
-Demo Video Link(Admin Pannel)
-https://drive.google.com/file/d/1LhHeYyNb0umdKHcWokzJStHdOk-NDESG/view?usp=drivesdk
-
-
-
 
 # Indoor Navigation System
 
