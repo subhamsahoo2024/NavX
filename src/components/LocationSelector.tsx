@@ -396,6 +396,12 @@ export default function LocationSelector({
           .filter((m): m is MapData => m !== null && m.nodes?.length > 0)
           .forEach((map) => {
             map.nodes.forEach((node) => {
+              // Filter out generic "Node <number>" names
+              const isGenericNodeName = /^Node\s+\d+$/.test(node.name);
+              if (isGenericNodeName) {
+                return; // Skip this node
+              }
+
               options.push({
                 nodeId: node.id,
                 mapId: map.id,
