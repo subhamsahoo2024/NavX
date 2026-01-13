@@ -320,8 +320,8 @@ export default function AdminPage() {
                     <h3 className="font-semibold text-white group-hover:text-cyan-400 transition-colors mb-1">
                       {map.name}
                     </h3>
-                    <p className="text-sm text-slate-400 mb-3">ID: {map.id}</p>
-                    <div className="flex items-center gap-4 text-xs text-slate-500">
+                    <p className="text-white/70">ID: {map.id}</p>
+                    <div className="flex items-center gap-4 text-xs text-white/70">
                       <span className="flex items-center gap-1">
                         <MapPin className="w-3 h-3" />
                         {(map as MapData & { nodes?: unknown[] }).nodes
@@ -339,8 +339,8 @@ export default function AdminPage() {
 
       {/* Create Map Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-fadeInUp">
-          <div className="bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-md border border-white/20 rounded-3xl shadow-2xl w-full max-w-md animate-scaleIn">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-fadeInUp">
+          <div className="bg-gradient-to-b from-blue-500/20 to-blue-500/10 backdrop-blur-md border border-white/20 rounded-3xl shadow-2xl w-full max-w-md animate-scaleIn">
             <div className="p-8">
               <h2 className="text-2xl font-bold text-white mb-6">
                 Create New Map

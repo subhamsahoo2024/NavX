@@ -104,6 +104,12 @@ function SearchableSelect({
   const filteredOptions = useMemo(() => {
     let filtered = options;
 
+    // Filter out generic "Node <number>" names from search dropdown
+    filtered = filtered.filter((opt) => {
+      const isGenericNodeName = /^Node\s+\d+$/.test(opt.nodeName);
+      return !isGenericNodeName;
+    });
+
     // Exclude specified node
     if (excludeNodeId) {
       filtered = filtered.filter((opt) => opt.nodeId !== excludeNodeId);
@@ -389,19 +395,13 @@ export default function LocationSelector({
           })
         );
 
-        // Flatten to SearchOption array
+        // Flatten to SearchOption array (include ALL nodes for QR code matching)
         const options: SearchOption[] = [];
 
         allMaps
           .filter((m): m is MapData => m !== null && m.nodes?.length > 0)
           .forEach((map) => {
             map.nodes.forEach((node) => {
-              // Filter out generic "Node <number>" names
-              const isGenericNodeName = /^Node\s+\d+$/.test(node.name);
-              if (isGenericNodeName) {
-                return; // Skip this node
-              }
-
               options.push({
                 nodeId: node.id,
                 mapId: map.id,
@@ -700,6 +700,16 @@ export default function LocationSelector({
               </div>
             )}
 
+          {/* Start Button - Touch Friendly */}
+          <button
+            onClick={handleStartNavigation}
+            disabled={!isValid}
+            className="w-full py-4 min-h-[52px] bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-300 disabled:to-gray-400 text-white font-semibold text-base sm:text-lg rounded-xl shadow-lg shadow-blue-500/25 disabled:shadow-none transition-all flex items-center justify-center gap-3"
+          >
+            <Navigation className="w-5 h-5 sm:w-6 sm:h-6" />
+            Start Navigation
+          </button>
+
           {/* Share Location Button */}
           <button
             onClick={handleShareLocation}
@@ -717,16 +727,6 @@ export default function LocationSelector({
                 Share My Location
               </>
             )}
-          </button>
-
-          {/* Start Button - Touch Friendly */}
-          <button
-            onClick={handleStartNavigation}
-            disabled={!isValid}
-            className="w-full py-4 min-h-[52px] bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-300 disabled:to-gray-400 text-white font-semibold text-base sm:text-lg rounded-xl shadow-lg shadow-blue-500/25 disabled:shadow-none transition-all flex items-center justify-center gap-3"
-          >
-            <Navigation className="w-5 h-5 sm:w-6 sm:h-6" />
-            Start Navigation
           </button>
         </div>
 

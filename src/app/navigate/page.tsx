@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, Suspense } from "react";
-import { Navigation2, RotateCcw, Home, MapPin, Target } from "lucide-react";
+import { RotateCcw, Home } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import IndoorNavigation from "@/components/IndoorNavigation";
@@ -325,7 +325,7 @@ function NavigatePageContent() {
           </div>
 
           {/* Logo */}
-          <div className="flex justify-center mb-8 animate-fadeInUp delay-100">
+          <div className="flex justify-center mb-2 mt-2 animate-fadeInUp delay-100">
             <div className="w-40 h-40 sm:w-48 sm:h-48">
               <img
                 src="/navigation-logo.png"
