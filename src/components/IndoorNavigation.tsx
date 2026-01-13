@@ -911,13 +911,19 @@ export default function IndoorNavigation({
           <motion.div
             drag
             dragMomentum={false}
-            dragConstraints={mapContainerRef}
+            dragConstraints={{
+              top: -window.innerHeight / 2 + 80,
+              bottom: window.innerHeight / 2 - 80,
+              left: -window.innerWidth / 2 + 150,
+              right: window.innerWidth / 2 - 150,
+            }}
             dragElastic={0}
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 20, opacity: 0 }}
             whileDrag={{ scale: 1.05, cursor: "grabbing" }}
-            className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 w-auto cursor-grab"
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-auto cursor-grab"
+            style={{ touchAction: "none" }}
           >
             <div className="flex items-center gap-3 px-4 py-3 bg-white/95 backdrop-blur-sm rounded-full shadow-2xl border border-gray-200">
               {/* Drag Handle */}

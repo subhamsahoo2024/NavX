@@ -441,18 +441,6 @@ function NavigatePageContent() {
           />
         )}
       </div>
-
-      {/* AI Chatbot - Change destination during navigation */}
-      {!isLoadingMaps && allMaps.length > 0 && (
-        <div className="relative z-20">
-          <AIChatbot
-            onSetDestination={handleBotSetDestination}
-            onSetCurrentLocation={handleBotSetCurrentLocation}
-            allMaps={allMaps}
-            currentMapId={navState.startNode?.mapId}
-          />
-        </div>
-      )}
     </main>
   );
 }
