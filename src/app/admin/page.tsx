@@ -304,7 +304,7 @@ export default function AdminPage() {
                     </div>
 
                     {/* Delete Button */}
-                    <button
+                    {/* <button
                       onClick={(e) => {
                         e.preventDefault();
                         handleDeleteMap(map.id, map.name);
@@ -312,7 +312,7 @@ export default function AdminPage() {
                       className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-red-600 hover:scale-110"
                     >
                       <Trash2 className="w-4 h-4" />
-                    </button>
+                    </button> */}
                   </div>
 
                   {/* Map Info */}
@@ -395,11 +395,10 @@ export default function AdminPage() {
                         id="map-image-upload"
                       />
                       <div
-                        className={`border-2 border-dashed rounded-xl p-6 text-center transition-all duration-300 ${
-                          isUploading
+                        className={`border-2 border-dashed rounded-xl p-6 text-center transition-all duration-300 ${isUploading
                             ? "border-cyan-400 bg-cyan-500/10"
                             : "border-white/20 hover:border-cyan-400 hover:bg-cyan-500/5"
-                        }`}
+                          }`}
                       >
                         {isUploading ? (
                           <div className="flex flex-col items-center">
